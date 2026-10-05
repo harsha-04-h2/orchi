@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Libre+Baskerville:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles/site.css" />
@@ -62,67 +62,61 @@
             <span>01</span>
             <span>Opening Shot</span>
           </div>
-          <a class="showreel" href="#title" data-cursor="PLAY">
+          <a class="showreel" href="#philosophy" data-cursor="PLAY">
             <span></span>
             Showreel
           </a>
         </div>
       </section>
 
-      <section class="title-sequence scene" id="title">
-        <img src="assets/generated/macro-detail.jpg" alt="" aria-hidden="true" loading="lazy" />
-        <div class="title-beam" aria-hidden="true"></div>
-        <div class="title-copy">
-          <p class="small-meta">A creative<br />growth studio</p>
-          <h1>ORCHI<br />MEDIA</h1>
-          <p class="small-meta">Bengaluru / India <span>Est. 2026</span></p>
+      <section class="philosophy scene" id="philosophy" data-scene>
+        <p class="kicker reveal"><span>01</span> / Philosophy</p>
+        <div class="philosophy-grid">
+          <div class="philosophy-copy">
+            <h1 class="reveal">Attention<br />is the new<br /><em>currency.</em></h1>
+            <p class="support reveal">In a world fighting for attention,<br />being good isn't enough.</p>
+            <p class="support reveal">You have to be impossible to ignore.</p>
+          </div>
+          <figure class="philosophy-image reveal" data-parallax>
+            <img src="assets/generated/philosophy-portrait.jpg" alt="Campaign portrait in deep red light" loading="lazy" data-depth="6" />
+          </figure>
         </div>
-        <div class="title-roles" aria-label="Studio capabilities">
-          <span>Film</span>
-          <span>Brand</span>
-          <span>Content</span>
-          <span>Digital</span>
-          <span>Growth</span>
-        </div>
-      </section>
-
-      <section class="attention scene cinematic-split" id="attention" data-scene>
-        <div class="chapter-line" aria-hidden="true"></div>
-        <div class="scene-image bleed-image" data-depth="5">
-          <img src="assets/generated/attention-establishing.jpg" alt="Campaign subjects in cool cinematic studio light" loading="lazy" />
-        </div>
-        <div class="scene-text" data-depth="9">
-          <p class="small-meta">01 / Philosophy<br />ORCHI MEDIA<br />Bengaluru / India</p>
-          <h2>Attention<br />is the new<br /><span>currency.</span></h2>
-          <p class="support">In a world fighting for attention, being good isn't enough.</p>
-          <p class="support">You have to be impossible to ignore.</p>
+        <div class="meta-row reveal">
+          <span>Orchi Media</span>
+          <span>Creative Growth Studio</span>
+          <span>Bengaluru / India</span>
         </div>
       </section>
 
-      <section class="closeup scene" data-scene>
-        <div class="macro-strip" aria-hidden="true">
-          <span></span><span></span><span></span><span></span>
+      <section class="detail scene" id="detail" data-scene>
+        <img class="detail-bg" src="assets/generated/detail-eye.jpg" alt="" aria-hidden="true" loading="lazy" />
+        <div class="detail-shade" aria-hidden="true"></div>
+        <p class="kicker reveal"><span>02</span> / Detail</p>
+        <h2 class="reveal">Detail<br />creates<br />desire.</h2>
+        <p class="detail-meta reveal">Brand<br />Film<br />Digital<br />Social</p>
+      </section>
+
+      <section class="craft scene" data-scene>
+        <img class="craft-bg" src="assets/generated/craft-bts.jpg" alt="On-set during a night shoot" loading="lazy" />
+        <div class="craft-shade" aria-hidden="true"></div>
+        <div class="craft-words reveal">
+          <span>Ideas</span>
+          <span>Worlds</span>
+          <span>Campaigns</span>
+          <span>Culture</span>
         </div>
-        <div class="closeup-image" data-depth="7">
-          <img src="assets/generated/macro-detail.jpg" alt="Extreme campaign close-up texture and light" loading="lazy" />
-        </div>
-        <h2 data-depth="4">Detail<br />creates<br />desire.</h2>
       </section>
 
       <section class="work scene" id="work" data-scene>
-        <div class="section-kicker">
-          <span>02 / Campaign Archive</span>
-          <span>Frame 024</span>
-        </div>
-        <h2 class="work-title">The Work</h2>
+        <p class="kicker reveal"><span>03</span> / The Work</p>
         <div class="book-wrap">
           <div class="campaign-book" data-cursor="DRAG">
             <div class="book-page page-left">
-              <img src="assets/generated/book-spread-left.jpg" alt="Brand campaign spread" loading="lazy" />
+              <img src="assets/generated/work-spread-left.jpg" alt="Brand campaign spread" loading="lazy" />
             </div>
             <div class="book-spine"></div>
             <div class="book-page page-right">
-              <img src="assets/generated/book-spread-right.jpg" alt="Brand film spread" loading="lazy" />
+              <img src="assets/generated/work-spread-right.jpg" alt="Brand film spread" loading="lazy" />
             </div>
             <div class="book-cover">
               <strong>ORCHI</strong>
@@ -130,157 +124,152 @@
             </div>
           </div>
           <div class="work-list" aria-label="Campaign types">
-            <button data-shot="0" data-cursor="EXPLORE">01 / Brand Campaign</button>
-            <button data-shot="1" data-cursor="EXPLORE">02 / Brand Film</button>
-            <button data-shot="2" data-cursor="EXPLORE">03 / Product Launch</button>
-            <button data-shot="3" data-cursor="EXPLORE">04 / Digital Experience</button>
-            <button data-shot="4" data-cursor="EXPLORE">05 / Social Campaign</button>
+            <button class="is-active" data-shot="0" data-cursor="EXPLORE"><span>01</span>Brand Campaign</button>
+            <button data-shot="1" data-cursor="EXPLORE"><span>02</span>Brand Film</button>
+            <button data-shot="2" data-cursor="EXPLORE"><span>03</span>Product Launch</button>
+            <button data-shot="3" data-cursor="EXPLORE"><span>04</span>Digital Experience</button>
+            <button data-shot="4" data-cursor="EXPLORE"><span>05</span>Social Campaign</button>
+            <p class="drag-hint"><i>↔</i>Drag / Explore</p>
           </div>
         </div>
       </section>
 
-      <section class="montage scene" data-scene>
-        <div class="montage-frame" data-parallax>
-          <img class="montage-a active" src="assets/generated/montage-portrait.jpg" alt="Campaign montage frame" loading="lazy" data-depth="4" />
-          <img class="montage-b" src="assets/generated/montage-silver.jpg" alt="" aria-hidden="true" loading="lazy" data-depth="8" />
-          <img src="assets/generated/macro-detail.jpg" alt="" aria-hidden="true" loading="lazy" data-depth="3" />
-          <img src="assets/generated/service-digital.jpg" alt="" aria-hidden="true" loading="lazy" data-depth="6" />
-          <img src="assets/generated/service-growth.jpg" alt="" aria-hidden="true" loading="lazy" data-depth="10" />
-        </div>
-        <div class="montage-copy">
-          <p class="small-meta">Match Cut / Cross Dissolve / Slow Push</p>
-          <h2>Campaigns<br />that move<br />like memory.</h2>
+      <section class="campaign scene" id="campaign" data-scene>
+        <img class="campaign-bg" src="assets/generated/campaign-car.jpg" alt="" aria-hidden="true" loading="lazy" />
+        <div class="campaign-shade" aria-hidden="true"></div>
+        <p class="kicker reveal"><span>04</span> / Campaign</p>
+        <h2 class="reveal">Built<br />for culture.</h2>
+        <p class="campaign-sub reveal">Not just<br />for clicks.</p>
+      </section>
+
+      <section class="perspective scene" data-scene>
+        <img class="perspective-bg" src="assets/generated/perspective-brutal.jpg" alt="" aria-hidden="true" loading="lazy" />
+        <div class="perspective-shade" aria-hidden="true"></div>
+        <p class="perspective-copy reveal">A<br />different<br />perspective<br />on growth.</p>
+      </section>
+
+      <section class="services scene" id="services" data-scene>
+        <p class="kicker reveal"><span>05</span> / What we do</p>
+        <div class="panel-grid">
+          <article class="panel reveal" data-cursor="BRAND">
+            <figure><img src="assets/generated/panel-brand.jpg" alt="Brand identity visual" loading="lazy" /></figure>
+            <p class="panel-num">01</p>
+            <h3>Brand</h3>
+            <p class="panel-tag">Identity that lasts.</p>
+          </article>
+          <article class="panel reveal" data-cursor="CONTENT">
+            <figure><img src="assets/generated/panel-content.jpg" alt="Content production visual" loading="lazy" /></figure>
+            <p class="panel-num">02</p>
+            <h3>Content</h3>
+            <p class="panel-tag">Stories that move.</p>
+          </article>
+          <article class="panel reveal" data-cursor="DIGITAL">
+            <figure><img src="assets/generated/panel-digital.jpg" alt="Digital experience visual" loading="lazy" /></figure>
+            <p class="panel-num">03</p>
+            <h3>Digital</h3>
+            <p class="panel-tag">Experiences that convert.</p>
+          </article>
+          <article class="panel reveal" data-cursor="GROWTH">
+            <figure><img src="assets/generated/panel-growth.jpg" alt="Growth campaign visual" loading="lazy" /></figure>
+            <p class="panel-num">04</p>
+            <h3>Growth</h3>
+            <p class="panel-tag">Attention that compounds.</p>
+          </article>
         </div>
       </section>
 
       <section class="method scene" id="method" data-scene>
+        <p class="kicker reveal">Method</p>
         <div class="method-bg" aria-hidden="true"></div>
         <div class="method-visuals" aria-hidden="true">
           <img src="assets/generated/method-silhouette.jpg" alt="" />
           <img src="assets/generated/montage-portrait.jpg" alt="" />
           <img src="assets/generated/studio-bts-a.jpg" alt="" />
-          <img src="assets/generated/cta-climax.jpg" alt="" />
+          <img src="assets/generated/studio-bts-b.jpg" alt="" />
         </div>
         <div class="chapters">
-          <article>
-            <img src="assets/generated/method-silhouette.jpg" alt="" aria-hidden="true" loading="lazy" />
+          <article class="reveal">
             <p><span>01</span> Chapter / Strategy</p>
             <h2>Find the tension</h2>
           </article>
-          <article>
-            <img src="assets/generated/montage-silver.jpg" alt="" aria-hidden="true" loading="lazy" />
+          <article class="reveal">
             <p><span>02</span> Chapter / World</p>
             <h2>Build the world</h2>
           </article>
-          <article>
-            <img src="assets/generated/studio-bts-a.jpg" alt="" aria-hidden="true" loading="lazy" />
+          <article class="reveal">
             <p><span>03</span> Chapter / Production</p>
             <h2>Make the thing</h2>
           </article>
-          <article>
-            <img src="assets/generated/service-growth.jpg" alt="" aria-hidden="true" loading="lazy" />
+          <article class="reveal">
             <p><span>04</span> Chapter / Motion</p>
             <h2>Make it move</h2>
           </article>
         </div>
-        <div class="method-final">Idea <span></span> World <span></span> Attention <span></span> Growth</div>
+        <div class="method-final reveal">Idea <span></span> World <span></span> Attention <span></span> Growth</div>
       </section>
 
-      <section class="services scene" id="services" data-scene>
-        <p class="small-meta">04 / Capabilities Index<br />Hover to reveal the world behind the word.</p>
-        <div class="service-stage">
-          <figure class="service-backdrop is-active">
-            <img src="assets/generated/service-brand.jpg" alt="Brand cinematic visual" loading="lazy" />
-          </figure>
-          <figure class="service-backdrop">
-            <img src="assets/generated/service-content.jpg" alt="Content cinematic visual" loading="lazy" />
-          </figure>
-          <figure class="service-backdrop">
-            <img src="assets/generated/service-digital.jpg" alt="Digital cinematic visual" loading="lazy" />
-          </figure>
-          <figure class="service-backdrop">
-            <img src="assets/generated/service-growth.jpg" alt="Growth cinematic visual" loading="lazy" />
-          </figure>
-          <div class="service-index">
-            <button class="is-active" data-service="0" data-cursor="BRAND">
-              <span>01</span>
-              <strong>Brand</strong>
-              <em>Identity, campaigns, point of view.</em>
-            </button>
-            <button data-service="1" data-cursor="CONTENT">
-              <span>02</span>
-              <strong>Content</strong>
-              <em>Film, photo, edit, release rhythm.</em>
-            </button>
-            <button data-service="2" data-cursor="DIGITAL">
-              <span>03</span>
-              <strong>Digital</strong>
-              <em>Experiences that feel built, not posted.</em>
-            </button>
-            <button data-service="3" data-cursor="GROWTH">
-              <span>04</span>
-              <strong>Growth</strong>
-              <em>Creative systems that earn attention.</em>
-            </button>
+      <section class="manifesto scene" id="manifesto" data-scene>
+        <p class="kicker reveal"><span>06</span> / Manifesto</p>
+        <div class="manifesto-grid">
+          <div class="manifesto-lines">
+            <p class="reveal"><span>01</span>Boring doesn't get remembered.</p>
+            <p class="reveal"><span>02</span>Safe doesn't create culture.</p>
+            <p class="reveal"><span>03</span>Average doesn't move people.</p>
+            <p class="manifesto-close reveal"><span>04</span>So we build <em>different.</em></p>
           </div>
+          <figure class="manifesto-image reveal" data-parallax>
+            <img src="assets/generated/manifesto-portrait.jpg" alt="Face in a beam of light" loading="lazy" data-depth="6" />
+          </figure>
         </div>
       </section>
 
-      <section class="manifesto scene" data-scene>
-        <p>Boring<br />doesn't get<br />remembered.</p>
-        <p>Safe<br />doesn't create<br />culture.</p>
-        <p>Average<br />doesn't move<br />people.</p>
-        <h2>So we build<br />different.</h2>
-      </section>
-
-      <section class="studio scene" data-scene>
-        <div class="studio-layers" data-parallax>
-          <img src="assets/generated/studio-bts-a.jpg" alt="ORCHI MEDIA studio production atmosphere" loading="lazy" data-depth="2" />
-          <img src="assets/generated/studio-bts-b.jpg" alt="" aria-hidden="true" loading="lazy" data-depth="8" />
-          <img src="assets/generated/macro-detail.jpg" alt="" aria-hidden="true" loading="lazy" data-depth="5" />
-          <img src="assets/generated/service-content.jpg" alt="" aria-hidden="true" loading="lazy" data-depth="10" />
+      <section class="studio scene" id="studio" data-scene>
+        <p class="kicker reveal"><span>07</span> / The Studio</p>
+        <p class="studio-line reveal"><em>Small team.</em><br />Big swing.</p>
+        <div class="studio-collage">
+          <figure class="reveal"><img src="assets/generated/studio-set.jpg" alt="Film set in a dark warehouse" loading="lazy" /></figure>
+          <figure class="reveal"><img src="assets/generated/studio-edit.jpg" alt="Edit suite glowing in the dark" loading="lazy" /></figure>
+          <figure class="reveal"><img src="assets/generated/studio-bts-a.jpg" alt="Photographer on a dark set" loading="lazy" /></figure>
+          <figure class="reveal"><img src="assets/generated/studio-bts-b.jpg" alt="Director at the monitor" loading="lazy" /></figure>
         </div>
-        <div class="studio-copy">
-          <p class="small-meta">Bengaluru / India<br />ORCHI MEDIA<br />EST. 2026</p>
-          <h2>Small team.<br />Big swing.</h2>
-          <p>ORCHI MEDIA is a creative growth studio built for brands that refuse to blend in.</p>
+        <div class="meta-row reveal">
+          <span>Orchi Media</span>
+          <span>Creative Growth Studio</span>
+          <span>Bengaluru / India</span>
+          <span>Est. 2026</span>
         </div>
       </section>
 
       <section class="cta scene" id="contact" data-scene>
-        <img src="assets/generated/cta-climax.jpg" alt="Final ORCHI MEDIA cinematic campaign frame" loading="lazy" />
-        <p class="small-meta cta-meta">ORCHI MEDIA<br />Bengaluru / India</p>
-        <div class="cta-copy">
-          <h2>Got something<br />worth building?</h2>
-          <p>Let's make<br />people look.</p>
-          <div class="cta-actions">
-            <a href="mailto:hello@orchi.media" data-cursor="START">Start a project -></a>
-            <a href="#work" data-cursor="VIEW">View the work -></a>
-          </div>
+        <img class="cta-bg" src="assets/generated/cta-city.jpg" alt="" aria-hidden="true" loading="lazy" />
+        <div class="cta-shade" aria-hidden="true"></div>
+        <p class="kicker reveal"><span>08</span> / Final CTA</p>
+        <h2 class="reveal">Got something<br /><em>worth building?</em><br />Let's make<br />people look.</h2>
+        <div class="cta-actions reveal">
+          <a class="btn-solid" href="mailto:hello@orchi.media" data-cursor="START">Start a project <i>→</i></a>
+          <a class="btn-ghost" href="#work" data-cursor="VIEW">View the work <i>→</i></a>
         </div>
+        <p class="cta-meta reveal">Orchi Media<br />Bengaluru / India</p>
       </section>
     </main>
 
     <footer class="credits scene">
-      <div>
-        <h2>ORCHI MEDIA</h2>
-        <p>Creative Growth Studio</p>
-        <p>Bengaluru / India</p>
+      <h2 class="reveal">Make something<br />they can't ignore.</h2>
+      <div class="credits-grid">
+        <nav aria-label="Footer navigation">
+          <a href="#work">Work</a>
+          <a href="#method">Method</a>
+          <a href="#services">Services</a>
+          <a href="#studio">About</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <nav aria-label="Social navigation">
+          <a href="#">Instagram</a>
+          <a href="#">LinkedIn</a>
+          <a href="#">YouTube</a>
+        </nav>
       </div>
-      <nav aria-label="Footer navigation">
-        <a href="#work">Work</a>
-        <a href="#method">Method</a>
-        <a href="#services">Services</a>
-        <a href="#attention">About</a>
-        <a href="#contact">Contact</a>
-      </nav>
-      <nav aria-label="Social navigation">
-        <a href="#">Instagram</a>
-        <a href="#">LinkedIn</a>
-        <a href="#">YouTube</a>
-      </nav>
-      <p class="copyright">© 2026 ORCHI MEDIA</p>
-      <p class="final-line">Make something<br />they can't ignore.</p>
+      <p class="copyright">© 2026 Orchi Media</p>
     </footer>
 
     <script src="scripts/site.js"></script>

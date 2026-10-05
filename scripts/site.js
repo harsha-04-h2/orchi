@@ -6,18 +6,11 @@ const book = document.querySelector(".campaign-book");
 const bookButtons = [...document.querySelectorAll(".work-list button")];
 const chapters = [...document.querySelectorAll(".chapters article")];
 const methodBg = document.querySelector(".method-bg");
-const methodVisuals = [...document.querySelectorAll(".method-visuals img")];
-const montageImages = [...document.querySelectorAll(".montage-frame img")];
-const serviceButtons = [...document.querySelectorAll(".service-index button")];
-const serviceBackdrops = [...document.querySelectorAll(".service-backdrop")];
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 let pointer = { x: innerWidth / 2, y: innerHeight / 2 };
 let smooth = { x: pointer.x, y: pointer.y };
-let scrollYTarget = window.scrollY;
-let currentScroll = window.scrollY;
 let ticking = false;
-let activeMontage = 0;
 let bookDragDelta = 0;
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
@@ -26,7 +19,6 @@ const lerp = (a, b, n) => a + (b - a) * n;
 function setPointer(event) {
   pointer.x = event.clientX;
   pointer.y = event.clientY;
-
   if (hero) {
     const rect = hero.getBoundingClientRect();
     const insideHero =
@@ -34,7 +26,6 @@ function setPointer(event) {
       event.clientX <= rect.right &&
       event.clientY >= rect.top &&
       event.clientY <= rect.bottom;
-
     if (rect.top <= innerHeight && rect.bottom >= 0 && insideHero) {
       root.style.setProperty("--mx", `${event.clientX - rect.left}px`);
       root.style.setProperty("--my", `${event.clientY - rect.top}px`);
@@ -45,11 +36,9 @@ function setPointer(event) {
 
 function setupHeroReveal() {
   if (!hero || matchMedia("(pointer: coarse)").matches) return;
-
   hero.addEventListener("pointerenter", () => {
     hero.classList.add("is-revealing");
   });
-
   hero.addEventListener("pointerleave", () => {
     hero.classList.remove("is-revealing");
     root.style.setProperty("--hero-mask", "0px");
@@ -79,16 +68,11 @@ function updateScrollState() {
       }
     });
     chapters.forEach((chapter, index) => {
-      const isActive = index === active;
-      chapter.classList.toggle("is-active", isActive);
-    });
-    methodVisuals.forEach((image, index) => {
-      image.classList.toggle("is-active", index === active);
+      chapter.classList.toggle("is-active", index === active);
     });
     methodBg.style.setProperty("--method-x", `${24 + active * 15}%`);
     methodBg.style.setProperty("--beam-left", `${15 + active * 19}%`);
   }
-
   ticking = false;
 }
 
@@ -102,11 +86,9 @@ function requestScrollUpdate() {
 function animate() {
   smooth.x = lerp(smooth.x, pointer.x, 0.12);
   smooth.y = lerp(smooth.y, pointer.y, 0.12);
-
   if (cursor) {
     cursor.style.transform = `translate3d(${smooth.x}px, ${smooth.y}px, 0) translate(-50%, -50%)`;
   }
-
   if (!reducedMotion) {
     document.querySelectorAll("[data-parallax]").forEach((wrap) => {
       const rect = wrap.getBoundingClientRect();
@@ -119,13 +101,11 @@ function animate() {
       });
     });
   }
-
   requestAnimationFrame(animate);
 }
 
 function setupCursor() {
   if (!cursor || matchMedia("(pointer: coarse)").matches) return;
-
   document.querySelectorAll("a, button, [data-cursor]").forEach((item) => {
     item.addEventListener("mouseenter", () => {
       cursor.classList.add("is-active");
@@ -140,16 +120,17 @@ function setupCursor() {
 
 function setupBook() {
   if (!book) return;
-
   let dragging = false;
   let startX = 0;
+
   const images = [
-    ["assets/generated/book-spread-left.jpg", "assets/generated/book-spread-right.jpg"],
-    ["assets/generated/montage-portrait.jpg", "assets/generated/montage-silver.jpg"],
-    ["assets/generated/service-brand.jpg", "assets/generated/service-content.jpg"],
-    ["assets/generated/service-digital.jpg", "assets/generated/service-growth.jpg"],
-    ["assets/generated/studio-bts-a.jpg", "assets/generated/cta-climax.jpg"],
+    ["assets/generated/work-spread-left.jpg", "assets/generated/work-spread-right.jpg"],
+    ["assets/generated/campaign-car.jpg", "assets/generated/craft-bts.jpg"],
+    ["assets/generated/panel-content.jpg", "assets/generated/panel-digital.jpg"],
+    ["assets/generated/studio-set.jpg", "assets/generated/studio-edit.jpg"],
+    ["assets/generated/panel-growth.jpg", "assets/generated/manifesto-portrait.jpg"],
   ];
+
   const left = book.querySelector(".page-left img");
   const right = book.querySelector(".page-right img");
 
@@ -178,55 +159,45 @@ function setupBook() {
     dragging = false;
     book.classList.remove("is-dragging");
     book.style.setProperty("--page-peek", "0");
-    if (Math.abs(event.clientX - startX) < 10 || Math.abs(bookDragDelta) > 60) book.classList.toggle("is-open");
+    if (Math.abs(event.clientX - startX) < 10 || Math.abs(bookDragDelta) > 60) {
+      book.classList.toggle("is-open");
+    }
   });
 
   bookButtons.forEach((button, index) => {
     button.addEventListener("mouseenter", () => {
       bookButtons.forEach((other) => other.classList.remove("is-active"));
       button.classList.add("is-active");
-      if (left && right) {
-        left.src = images[index][0];
-        right.src = images[index][1];
+      const pair = images[index % images.length];
+      if (left && right && pair) {
+        left.src = pair[0];
+        right.src = pair[1];
       }
       book.classList.add("is-open");
     });
   });
-
   bookButtons[0]?.classList.add("is-active");
 }
 
-function setupMontage() {
-  if (montageImages.length < 2 || reducedMotion) return;
-  setInterval(() => {
-    montageImages[activeMontage].classList.remove("active");
-    activeMontage = (activeMontage + 1) % montageImages.length;
-    montageImages[activeMontage].classList.add("active");
-  }, 3300);
-}
-
-function setupServices() {
-  if (!serviceButtons.length || !serviceBackdrops.length) return;
-
-  const setActive = (button, index) => {
-    serviceButtons.forEach((item) => item.classList.remove("is-active"));
-    serviceBackdrops.forEach((item) => item.classList.remove("is-active"));
-    button.classList.add("is-active");
-    serviceBackdrops[index]?.classList.add("is-active");
-  };
-
-  serviceButtons.forEach((button, index) => {
-    button.addEventListener("mouseenter", () => setActive(button, index));
-    button.addEventListener("focus", () => setActive(button, index));
-
-    button.addEventListener("pointermove", (event) => {
-      const rect = button.getBoundingClientRect();
-      button.style.setProperty("--service-x", `${event.clientX - rect.left - rect.width / 2}px`);
-      button.style.setProperty("--service-y", `${event.clientY - rect.top - rect.height / 2}px`);
-      document.querySelector(".services")?.style.setProperty("--service-x", `${event.clientX - innerWidth / 2}px`);
-      document.querySelector(".services")?.style.setProperty("--service-y", `${event.clientY - innerHeight / 2}px`);
-    });
-  });
+function setupReveals() {
+  const els = [...document.querySelectorAll(".reveal")];
+  if (!els.length) return;
+  if (reducedMotion) {
+    els.forEach((el) => el.classList.add("in"));
+    return;
+  }
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in");
+          io.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+  );
+  els.forEach((el) => io.observe(el));
 }
 
 function setupSmoothAnchors() {
@@ -249,8 +220,7 @@ addEventListener("resize", requestScrollUpdate);
 setupCursor();
 setupHeroReveal();
 setupBook();
-setupMontage();
-setupServices();
+setupReveals();
 setupSmoothAnchors();
 updateScrollState();
 animate();
