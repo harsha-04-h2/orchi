@@ -4,14 +4,19 @@ const cursorLabel = cursor?.querySelector("span");
 const hero = document.querySelector(".hero-stage");
 const book = document.querySelector(".campaign-book");
 const bookButtons = [...document.querySelectorAll(".work-list button")];
-const chapters = [...document.querySelectorAll(".chapters article")];
-const methodBg = document.querySelector(".method-bg");
+const workDesc = document.querySelector(".work-desc");
+const marqueeTrack = document.querySelector(".marquee-track");
+const magnetics = [...document.querySelectorAll(".magnetic")];
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 let pointer = { x: innerWidth / 2, y: innerHeight / 2 };
 let smooth = { x: pointer.x, y: pointer.y };
 let ticking = false;
 let bookDragDelta = 0;
+let lastScrollY = scrollY;
+let scrollVelocity = 0;
+let marqueeOffset = 0;
+let lastFrameTime = performance.now();
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 const lerp = (a, b, n) => a + (b - a) * n;
@@ -45,34 +50,45 @@ function setupHeroReveal() {
   });
 }
 
+/* Character-split stagger reveals: [data-split] headlines break into
+   chars that rise in sequence when the reveal fires. */
+function setupCharSplits() {
+  document.querySelectorAll("[data-split]").forEach((el) => {
+    const walk = (node) => {
+      [...node.childNodes].forEach((child) => {
+        if (child.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          let i = 0;
+          for (const ch of child.textContent) {
+            const span = document.createElement("span");
+            span.className = "char";
+            span.textContent = ch === " " ? "\u00a0" : ch;
+            span.style.transitionDelay = `${(i * 22).toFixed(0)}ms`;
+            frag.appendChild(span);
+            i++;
+          }
+          node.replaceChild(frag, child);
+        } else if (child.nodeType === 1 && child.tagName !== "BR") {
+          walk(child);
+        }
+      });
+    };
+    walk(el);
+  });
+}
+
 function updateScrollState() {
   const maxScroll = document.documentElement.scrollHeight - innerHeight;
   root.style.setProperty("--progress", `${maxScroll > 0 ? (scrollY / maxScroll) * 100 : 0}%`);
+
+  scrollVelocity = lerp(scrollVelocity, scrollY - lastScrollY, 0.2);
+  lastScrollY = scrollY;
 
   document.querySelectorAll(".scene").forEach((scene) => {
     const rect = scene.getBoundingClientRect();
     const progress = clamp((innerHeight - rect.top) / (innerHeight + rect.height), 0, 1);
     scene.style.setProperty("--scene-progress", progress.toFixed(3));
   });
-
-  if (chapters.length && methodBg) {
-    const mid = innerHeight * 0.52;
-    let active = 0;
-    let closest = Infinity;
-    chapters.forEach((chapter, index) => {
-      const rect = chapter.getBoundingClientRect();
-      const distance = Math.abs(rect.top - mid);
-      if (distance < closest) {
-        closest = distance;
-        active = index;
-      }
-    });
-    chapters.forEach((chapter, index) => {
-      chapter.classList.toggle("is-active", index === active);
-    });
-    methodBg.style.setProperty("--method-x", `${24 + active * 15}%`);
-    methodBg.style.setProperty("--beam-left", `${15 + active * 19}%`);
-  }
   ticking = false;
 }
 
@@ -83,12 +99,26 @@ function requestScrollUpdate() {
   }
 }
 
-function animate() {
+function animate(now) {
+  const dt = Math.min(64, now - lastFrameTime) / 16.67;
+  lastFrameTime = now;
+
   smooth.x = lerp(smooth.x, pointer.x, 0.12);
   smooth.y = lerp(smooth.y, pointer.y, 0.12);
   if (cursor) {
     cursor.style.transform = `translate3d(${smooth.x}px, ${smooth.y}px, 0) translate(-50%, -50%)`;
   }
+
+  /* Scroll-velocity marquee: base drift + speed follows scroll velocity. */
+  if (marqueeTrack && !reducedMotion) {
+    const speed = 0.9 + clamp(Math.abs(scrollVelocity) * 0.09, 0, 7);
+    marqueeOffset -= speed * dt;
+    const half = marqueeTrack.scrollWidth / 2;
+    if (-marqueeOffset >= half) marqueeOffset += half;
+    marqueeTrack.style.transform = `translate3d(${marqueeOffset.toFixed(1)}px, 0, 0)`;
+    marqueeTrack.style.animation = "none";
+  }
+
   if (!reducedMotion) {
     document.querySelectorAll("[data-parallax]").forEach((wrap) => {
       const rect = wrap.getBoundingClientRect();
@@ -114,6 +144,31 @@ function setupCursor() {
     item.addEventListener("mouseleave", () => {
       cursor.classList.remove("is-active");
       if (cursorLabel) cursorLabel.textContent = "";
+    });
+  });
+}
+
+/* Magnetic buttons: gentle pull toward the pointer, spring back on leave. */
+function setupMagnetic() {
+  if (!magnetics.length || reducedMotion || matchMedia("(pointer: coarse)").matches) return;
+  magnetics.forEach((el) => {
+    let raf = 0;
+    el.addEventListener("pointermove", (event) => {
+      const rect = el.getBoundingClientRect();
+      const dx = event.clientX - (rect.left + rect.width / 2);
+      const dy = event.clientY - (rect.top + rect.height / 2);
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        el.style.transform = `translate3d(${(dx * 0.18).toFixed(1)}px, ${(dy * 0.22).toFixed(1)}px, 0)`;
+      });
+    });
+    el.addEventListener("pointerleave", () => {
+      cancelAnimationFrame(raf);
+      el.style.transition = "transform 500ms cubic-bezier(.16,1,.3,1)";
+      el.style.transform = "translate3d(0, 0, 0)";
+      setTimeout(() => {
+        el.style.transition = "";
+      }, 520);
     });
   });
 }
@@ -164,23 +219,33 @@ function setupBook() {
     }
   });
 
+  const setActive = (button, index) => {
+    bookButtons.forEach((other) => other.classList.remove("is-active"));
+    button.classList.add("is-active");
+    const pair = images[index % images.length];
+    if (left && right && pair) {
+      left.src = pair[0];
+      right.src = pair[1];
+    }
+    if (workDesc && button.dataset.desc) {
+      workDesc.style.opacity = "0";
+      setTimeout(() => {
+        workDesc.textContent = button.dataset.desc;
+        workDesc.style.opacity = "1";
+      }, 200);
+    }
+    book.classList.add("is-open");
+  };
+
   bookButtons.forEach((button, index) => {
-    button.addEventListener("mouseenter", () => {
-      bookButtons.forEach((other) => other.classList.remove("is-active"));
-      button.classList.add("is-active");
-      const pair = images[index % images.length];
-      if (left && right && pair) {
-        left.src = pair[0];
-        right.src = pair[1];
-      }
-      book.classList.add("is-open");
-    });
+    button.addEventListener("mouseenter", () => setActive(button, index));
+    button.addEventListener("focus", () => setActive(button, index));
   });
-  bookButtons[0]?.classList.add("is-active");
+  if (bookButtons[0]) setActive(bookButtons[0], 0);
 }
 
 function setupReveals() {
-  const els = [...document.querySelectorAll(".reveal")];
+  const els = [...document.querySelectorAll(".reveal, .reveal-img")];
   if (!els.length) return;
   if (reducedMotion) {
     els.forEach((el) => el.classList.add("in"));
@@ -217,10 +282,12 @@ addEventListener("pointermove", setPointer, { passive: true });
 addEventListener("scroll", requestScrollUpdate, { passive: true });
 addEventListener("resize", requestScrollUpdate);
 
+setupCharSplits();
 setupCursor();
 setupHeroReveal();
 setupBook();
+setupMagnetic();
 setupReveals();
 setupSmoothAnchors();
 updateScrollState();
-animate();
+requestAnimationFrame(animate);
